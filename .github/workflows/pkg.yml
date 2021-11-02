@@ -42,12 +42,12 @@ jobs:
     strategy:
       matrix:
         image: # can't use complex values here, only primitive values are allowed
-          - "ubuntu:xenial"   # ubuntu/16.04
-          - "ubuntu:bionic"   # ubuntu/18.04
-          - "ubuntu:focal"    # ubuntu/20.04
-          - "debian:stretch"  # debian/9
-          - "debian:buster"   # debian/10
-          - "debian:bullseye" # debian/11
+          #- "ubuntu:xenial"   # ubuntu/16.04
+          #- "ubuntu:bionic"   # ubuntu/18.04
+          #- "ubuntu:focal"    # ubuntu/20.04
+          #- "debian:stretch"  # debian/9
+          #- "debian:buster"   # debian/10
+          #- "debian:bullseye" # debian/11
           - "centos:7"
           - "centos:8"
     env:
@@ -312,12 +312,12 @@ jobs:
       fail-fast: false
       matrix:
         image: # can't use complex values here, only primitive values are allowed
-          - "ubuntu:xenial"   # ubuntu/16.04
-          - "ubuntu:bionic"   # ubuntu/18.04
-          - "ubuntu:focal"    # ubuntu/20.04
-          - "debian:stretch"  # debian/9
-          #- "debian:buster"   # debian/10 (disabled, see issue #26)
-          - "debian:bullseye" # debian/11
+          #- "ubuntu:xenial"   # ubuntu/16.04
+          #- "ubuntu:bionic"   # ubuntu/18.04
+          #- "ubuntu:focal"    # ubuntu/20.04
+          #- "debian:stretch"  # debian/9
+          ##- "debian:buster"   # debian/10 (disabled, see issue #26)
+          #- "debian:bullseye" # debian/11
           - "centos:7"
           - "centos:8"
     steps:
