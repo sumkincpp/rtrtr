@@ -643,6 +643,9 @@ struct RtrMetrics {
 
     /// The number of bytes written.
     bytes_written: AtomicU64,
+
+    /// The number of active sessions.
+    sessions_count: AtomicU32,
 }
 
 impl RtrMetrics {
@@ -654,6 +657,7 @@ impl RtrMetrics {
             updated: i64::MIN.into(),
             bytes_read: 0.into(),
             bytes_written: 0.into(),
+            sessions_count: 0.into(),
         }
     }
 
@@ -663,6 +667,14 @@ impl RtrMetrics {
 
     fn inc_bytes_written(&self, count: u64) {
         self.bytes_written.fetch_add(count, atomic::Ordering::Relaxed);
+    }
+
+    fn increment_session_count(&self) {
+        self.sessions_count.fetch_add(1, atomic::Ordering::Relaxed);
+    }
+
+    fn decrement_session_count(&self) {
+        self.sessions_count.fetch_sub(1, atomic::Ordering::Relaxed);
     }
 }
 
@@ -691,6 +703,11 @@ impl RtrMetrics {
     const BYTES_WRITTEN_METRIC: Metric = Metric::new(
         "bytes_written", "the number of bytes written",
         MetricType::Counter, MetricUnit::Total,
+    );
+
+    const SESSIONS_COUNT_METRIC: Metric = Metric::new(
+        "sessions_count", "the number of active sessions",
+        MetricType::Gauge, MetricUnit::Total,
     );
 
     const ISO_DATE: &'static [chrono::format::Item<'static>] = &[
@@ -759,6 +776,12 @@ impl metrics::Source for RtrMetrics {
         target.append_simple(
             &Self::BYTES_WRITTEN_METRIC, Some(unit_name),
             self.bytes_written.load(atomic::Ordering::Relaxed)
+        );
+
+        target.append_simple(
+            &Self::SESSIONS_COUNT_METRIC,
+            Some(unit_name),
+            self.sessions_count.load(atomic::Ordering::Relaxed),
         );
     }
 }
